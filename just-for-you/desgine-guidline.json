@@ -1,0 +1,66 @@
+{
+  "typography": {
+    "heading": "Outfit, sans-serif",
+    "body": "Inter, sans-serif",
+    "accent": "Playfair Display, serif"
+  },
+  "colors": {
+    "background": "#0a0a0c",
+    "card": "#141419",
+    "primary": "#ff3366",
+    "secondary": "#ff6b8b",
+    "text": "#f8fafc",
+    "muted": "#94a3b8",
+    "border": "#272730"
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-black/60 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.37)]",
+    "glow": "shadow-[0_0_30px_rgba(255,51,102,0.25)]",
+    "border_gradient": "border border-white/10 hover:border-pink-500/50 transition-colors duration-300"
+  },
+  "component_name": "JustForYouApp",
+  "grids": {
+    "bento": "grid grid-cols-1 md:grid-cols-12 gap-6"
+  },
+  "layouts": {
+    "container": "max-w-6xl mx-auto px-4 py-8"
+  },
+  "motion": {
+    "transition": "transition-all duration-300 ease-in-out",
+    "framer_spring": {
+      "type": "spring",
+      "stiffness": 300,
+      "damping": 25
+    }
+  },
+  "accessibility": {
+    "aria_labels": "MANDATORY for all interactive items",
+    "contrast": "APCA and WCAG AA compliant"
+  },
+  "media": {
+    "hero_image": "https://images.unsplash.com/photo-1518199266791-5375a83190b7"
+  },
+  "3d_libraries": [
+    "framer-motion",
+    "canvas-confetti"
+  ],
+  "image_urls": [
+    {
+      "category": "romantic_hero",
+      "description": "Romantic moody aesthetic wallpaper",
+      "image_url": "https://images.unsplash.com/photo-1518199266791-5375a83190b7"
+    },
+    {
+      "category": "teddy_bear",
+      "description": "Cute aesthetic wallpaper for memory cards",
+      "image_url": "https://images.unsplash.com/photo-1534447677768-be436bb09401"
+    }
+  ],
+  "instructions_to_main_agent": "Build a stunning romantic web application named 'Just For You' with a sleek dark theme, animated teddy bear hero holding ears saying I'm Sorry with floating hearts, Roman Marathi response dropdowns (e.g. 'Tula mazha rag aala ahe mhnun bolat nahe', 'Interest nahe mhnun', 'Life madhee kadhi bolycha nahe'), custom message input, instant submit with Gmail notification backend integration, and a heartwarming romantic success screen ('तुझं उत्तर मिळालं, धन्यवाद ❤️'). Add interactive memory gallery, romantic soundtrack player toggle, love countdown timer, and glassmorphic UI elements.",
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "DO NOT use complete transparent background in header or overlays",
+    "Ensure all buttons and inputs have data-testid attributes",
+    "Maintain high contrast and APCA compliance",
+    "Include responsive layout for mobile and desktop"
+  ]
+}
