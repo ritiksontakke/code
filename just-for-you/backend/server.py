@@ -1,30 +1,74 @@
+
 import os
+import smtplib
 
-import requests
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from email.message import EmailMessage
+load_dotenv()
+
+app = FastAPI(title="Just For You API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class ResponseData(BaseModel):
+    reason: str
+    message: str = ""
+
+@app.get("/api/")
+async def home():
+    return {"message": "Just For You is ready"}
 
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL").rstrip("/")
+@app.post("/api/responses")
+async def submit_response(data: ResponseData):
 
+    email_user = os.getenv("EMAIL_USER")
+    email_password = os.getenv("EMAIL_APP_PASSWORD")
+    email_to = os.getenv("EMAIL_TO")
 
-def test_api_root_returns_ready_message():
-    response = requests.get(f"{BASE_URL}/api/", timeout=15)
-    assert response.status_code == 200
-    assert response.json()["message"] == "Just For You is ready"
+    if not email_user or not email_password or not email_to:
+        raise HTTPException(
+            status_code=503,
+            detail="Email configuration is missing"
+        )
 
+    email = EmailMessage()
+    email["Subject"] = "New Just For You Response ❤️"
+    email["From"] = email_user
+    email["To"] = email_to
 
-def test_response_rejects_missing_reason():
-    response = requests.post(
-        f"{BASE_URL}/api/responses", json={"message": "TEST_no_reason"}, timeout=15
+    email.set_content(
+        f"""
+New response received!
+
+Reason: {data.reason}
+
+Message: {data.message}
+"""
     )
-    assert response.status_code == 422
-    assert "reason" in response.text
 
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+            smtp.starttls()
+            smtp.login(email_user, email_password)
+            smtp.send_message(email)
 
-def test_response_returns_clear_configuration_error_when_email_key_missing():
-    response = requests.post(
-        f"{BASE_URL}/api/responses",
-        json={"reason": "TEST_reason", "message": "TEST_message"},
-        timeout=15,
-    )
-    assert response.status_code == 503
-    assert response.json()["detail"] == "Email notification is not configured yet"
+        print("EMAIL SENT SUCCESSFULLY!")
+
+        return {"message": "Email sent successfully"}
+
+    except Exception as e:
+        print("EMAIL ERROR:", str(e))
+        raise HTTPException(
+            status_code=500,
+            detail="Email sending failed"
+        )
